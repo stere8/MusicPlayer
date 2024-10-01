@@ -1,0 +1,44 @@
+[
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "Play",
+    "RelativePath": "api/Songs/play/{filename}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filename",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "Test",
+    "RelativePath": "api/Songs/test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "Upload",
+    "RelativePath": "api/Songs/upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
