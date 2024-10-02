@@ -12,7 +12,6 @@
     "sonorous.api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7082;http://localhost:5194;http://0.0.0.0:5194;https://0.0.0.0:7082",
       "environmentVariables": {

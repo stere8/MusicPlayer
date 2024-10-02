@@ -1,3 +1,5 @@
+using SonorousAPI.Controllers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,11 +19,23 @@ builder.Services.AddCors(options =>
         {
             builder.AllowAnyOrigin() // Allow requests from any origin
                 .AllowAnyMethod() // Allow any HTTP method (GET, POST, etc.)
-                .AllowAnyHeader(); // Allow any header
+                .AllowAnyHeader(); // Allow any header.
+        });
+
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") // Allow only this specific origin
+                .AllowAnyMethod() // Allow any HTTP method (GET, POST, etc.)
+                .AllowAnyHeader() // Allow any header
+                .AllowCredentials(); // Allow credentials
         });
 });
 
-    
+
+builder.Services.AddSignalR();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,11 +47,30 @@ if (app.Environment.IsDevelopment())
 
 // **Use CORS middleware**
 app.UseCors("AllowAllOrigins");
-app.UseStaticFiles();
+app.UseCors("AllowSpecificOrigin");
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append("Cache-Control", "no-store");
+    }
+});
+
+app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<AudioStreamHub>("/audioStreamHub");
+    endpoints.MapControllers();
+});
+ 
+
+
 
 app.Run();

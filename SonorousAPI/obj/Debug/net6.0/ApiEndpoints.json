@@ -1,6 +1,33 @@
 [
   {
     "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "WriteToStream",
+    "RelativePath": "api/Songs",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filePath",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "outputStream",
+        "Type": "System.IO.Stream",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
     "Method": "Play",
     "RelativePath": "api/Songs/play/{filename}",
     "HttpMethod": "GET",
