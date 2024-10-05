@@ -1,0 +1,79 @@
+[
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "GetAllSongs",
+    "RelativePath": "api/Songs",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "Play",
+    "RelativePath": "api/Songs/play/{filename}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filename",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "Test",
+    "RelativePath": "api/Songs/test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SonorousAPI.Controllers.SongsController",
+    "Method": "Upload",
+    "RelativePath": "api/Songs/upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "artist",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "album",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "genre",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "duration",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

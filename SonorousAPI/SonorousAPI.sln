@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.11.35201.85
+VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonorousAPI", "SonorousAPI.csproj", "{3ADC9DCF-8572-47D4-B6DB-4E57E89C9AEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SonorousAPI", "SonorousAPI\SonorousAPI.csproj", "{76A48C11-F71D-4F14-8EF0-1C99A7715CB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3ADC9DCF-8572-47D4-B6DB-4E57E89C9AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3ADC9DCF-8572-47D4-B6DB-4E57E89C9AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3ADC9DCF-8572-47D4-B6DB-4E57E89C9AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3ADC9DCF-8572-47D4-B6DB-4E57E89C9AEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A48C11-F71D-4F14-8EF0-1C99A7715CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A48C11-F71D-4F14-8EF0-1C99A7715CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A48C11-F71D-4F14-8EF0-1C99A7715CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A48C11-F71D-4F14-8EF0-1C99A7715CB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A2321EBC-D56D-4188-8AA5-4BE43431DA2C}
+		SolutionGuid = {5F75C666-3230-44F6-AF63-DEA67E26297F}
 	EndGlobalSection
 EndGlobal

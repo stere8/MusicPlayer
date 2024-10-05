@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "AlCY6cA1bNcBEMeFeM7F+0IyTadjKm9wS+mrHXD23n0=",
+  "Source": "SonorousAPI",
+  "BasePath": "_content/SonorousAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "SonorousAPI\\wwwroot",
+      "Source": "SonorousAPI",
+      "ContentRoot": "\\\\OCPC\\MusicPlayer\\SonorousAPI\\SonorousAPI\\wwwroot\\",
+      "BasePath": "_content/SonorousAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

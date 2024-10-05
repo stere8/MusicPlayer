@@ -1,0 +1,6 @@
+@SonorousAPI_HostAddress = http://localhost:5115
+
+GET {{SonorousAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
