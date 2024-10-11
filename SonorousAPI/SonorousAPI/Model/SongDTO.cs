@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SonorousAPI.Models
 {
@@ -11,5 +12,6 @@ namespace SonorousAPI.Models
         public string Genre { get; set; }
         public int Duration { get; set; } // Duration in seconds
         public DateTime UploadDate { get; set; }
+        public string FilePath { get; set; }
     }
 }

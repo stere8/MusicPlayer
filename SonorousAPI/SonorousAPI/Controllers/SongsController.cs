@@ -1,21 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using SonorousAPI.Models;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using SonorousAPI.Models; // Replace with your actual namespace where your models are defined
 
 namespace SonorousAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SongsController : Controller
+    public class SongsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly string _uploadsFolderPath;
 
         public SongsController(ApplicationDbContext context)
         {
             _context = context;
+            _uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
         }
 
         [HttpGet("all")]
@@ -37,14 +42,15 @@ namespace SonorousAPI.Controllers
                 Album = song.Album,
                 Genre = song.Genre,
                 Duration = song.Duration,
-                UploadDate = song.UploadDate
+                UploadDate = song.UploadDate,
+                FilePath = song.FilePath
             }).ToList();
 
             return Ok(songDTOs);
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> Upload(IFormFile file, [FromForm] string title, [FromForm] string artist, [FromForm] string album, [FromForm] string genre, [FromForm] int duration)
+        public async Task<IActionResult> Upload([FromForm] IFormFile file, [FromForm] string title, [FromForm] string artist, [FromForm] string album, [FromForm] string genre, [FromForm] int duration)
         {
             if (file == null || file.Length == 0)
             {
@@ -52,7 +58,9 @@ namespace SonorousAPI.Controllers
             }
 
             var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", uniqueFileName);
+            var filePath = Path.Combine(_uploadsFolderPath, uniqueFileName);
+
+            Directory.CreateDirectory(_uploadsFolderPath); // Ensure the uploads directory exists
 
             await using (var stream = new FileStream(filePath, FileMode.Create))
             {
@@ -83,10 +91,57 @@ namespace SonorousAPI.Controllers
                 Album = song.Album,
                 Genre = song.Genre,
                 Duration = song.Duration,
-                UploadDate = song.UploadDate
+                UploadDate = song.UploadDate,
+                FilePath = song.FilePath
             };
 
             return Ok(songDTO);
         }
+
+        [HttpGet("play/{filename}")]
+        public IActionResult Play(string filename)
+        {
+            var filePath = Path.Combine(_uploadsFolderPath, filename);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("File not found");
+            }
+
+            var file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            var contentType = "audio/mpeg";
+            var fileLength = file.Length;
+
+            Response.Headers.Add("Accept-Ranges", "bytes");
+
+            if (Request.Headers.ContainsKey("Range"))
+            {
+                var rangeHeader = Request.Headers["Range"].ToString();
+                var range = rangeHeader.Replace("bytes=", "").Split('-');
+                long from = long.Parse(range[0]);
+                long to = range.Length > 1 && long.TryParse(range[1], out long end) ? end : fileLength - 1;
+
+                if (from >= fileLength || to >= fileLength)
+                {
+                    return BadRequest("Requested range not satisfiable");
+                }
+
+                // Set file pointer to the starting point of the requested range
+                file.Seek(from, SeekOrigin.Begin);
+                var length = to - from + 1;
+
+                Response.StatusCode = 206;
+                Response.ContentLength = length;
+                Response.Headers.Add("Content-Range", $"bytes {from}-{to}/{fileLength}");
+
+                Console.WriteLine($"Serving range {from}-{to} of file {filename}, length {length}");
+                return new FileStreamResult(file, contentType);
+            }
+
+            // If no range request is made, serve the entire file
+            Response.ContentLength = fileLength;
+            return new FileStreamResult(file, contentType);
+        }
+
+
     }
 }

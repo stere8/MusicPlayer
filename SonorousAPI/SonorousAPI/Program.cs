@@ -11,8 +11,6 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 // Add services to the container.
 builder.Services.AddControllers();
 
-builder.WebHost.UseUrls("http://0.0.0.0:5194", "https://0.0.0.0:7082");
-
 // Add DbContext to use SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -24,29 +22,24 @@ builder.Services.AddSwaggerGen();
 // Configure Kestrel server options (for handling larger file uploads)
 builder.WebHost.ConfigureKestrel(serverOptions => { serverOptions.Limits.MaxRequestBodySize = null; });
 
-// CORS Configuration (Choose either AllowAllOrigins or AllowSpecificOrigin)
+// CORS Configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        policyBuilder =>
-        {
-            policyBuilder.AllowAnyOrigin() // Allow requests from any origin
-                .AllowAnyMethod() // Allow any HTTP method (GET, POST, etc.)
-                .AllowAnyHeader(); // Allow any header
-        });
-
-    options.AddPolicy("AllowSpecificOrigin",
-        policyBuilder =>
-        {
-            policyBuilder.WithOrigins("http://localhost:3000") // Allow only this specific origin
-                .AllowAnyMethod() // Allow any HTTP method (GET, POST, etc.)
-                .AllowAnyHeader() // Allow any header
-                .AllowCredentials(); // Allow credentials
-        });
+    options.AddPolicy("AllowSpecificOrigin", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
 });
-
 // Add SignalR for real-time communication
 builder.Services.AddSignalR();
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = null; // Allow large request bodies
+});
 
 // Build the app
 var app = builder.Build();
@@ -58,8 +51,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Use CORS middleware (choose only one policy to avoid conflicts)
-app.UseCors("AllowSpecificOrigin"); // Or use "AllowAllOrigins" if you want to allow all origins
+// Use CORS middleware (Allow all origins for now)
+app.UseCors("AllowSpecificOrigin");
 
 // Serve static files from the "uploads" folder and disable caching
 app.UseStaticFiles(new StaticFileOptions
