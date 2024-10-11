@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "\\\\OCPC\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj": {}
+    "C:\\Users\\twizo\\Documents\\GitHub\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj": {}
   },
   "projects": {
-    "\\\\OCPC\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj": {
+    "C:\\Users\\twizo\\Documents\\GitHub\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "\\\\OCPC\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj",
+        "projectUniqueName": "C:\\Users\\twizo\\Documents\\GitHub\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj",
         "projectName": "SonorousAPI",
-        "projectPath": "\\\\OCPC\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj",
+        "projectPath": "C:\\Users\\twizo\\Documents\\GitHub\\MusicPlayer\\SonorousAPI\\SonorousAPI\\SonorousAPI.csproj",
         "packagesPath": "C:\\Users\\twizo\\.nuget\\packages\\",
-        "outputPath": "\\\\OCPC\\MusicPlayer\\SonorousAPI\\SonorousAPI\\obj\\",
+        "outputPath": "C:\\Users\\twizo\\Documents\\GitHub\\MusicPlayer\\SonorousAPI\\SonorousAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,11 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SonorousAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SonorousAPI.Controllers
 {
@@ -14,64 +12,10 @@ namespace SonorousAPI.Controllers
     public class SongsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly string _uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
         public SongsController(ApplicationDbContext context)
         {
             _context = context;
-        }
-
-        [HttpPost("upload")]
-        public async Task<IActionResult> Upload(IFormFile file, [FromForm] string title, [FromForm] string artist, [FromForm] string album, [FromForm] string genre, [FromForm] int duration)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("No file uploaded");
-            }
-
-            if (!Directory.Exists(_uploadsFolderPath))
-            {
-                Directory.CreateDirectory(_uploadsFolderPath);
-            }
-
-            // Generate a unique file name
-            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-
-            // Create the file path for saving the file
-            var filePath = Path.Combine(_uploadsFolderPath, uniqueFileName);
-
-            await using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            // Save the song details to the database
-            var song = new Song
-            {
-                Title = title,
-                Artist = artist,
-                Album = album,
-                FilePath = uniqueFileName, // Store the unique file name only
-                Genre = genre,
-                Duration = duration,
-                FileType = file.ContentType,
-                UploadDate = DateTime.Now
-            };
-
-            try
-            {
-                _context.Songs.Add(song);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, "An error occurred while saving to the database.");
-            }
-
-            Console.WriteLine($"File uploaded: {filePath}");
-
-            // After upload, return the list of all songs
-            return await GetAllSongs();
         }
 
         [HttpGet("all")]
@@ -84,26 +28,65 @@ namespace SonorousAPI.Controllers
                 return Ok(new { message = "No songs found." });
             }
 
-            return Ok(songs);
-        }
-        [HttpGet("play/{filename}")]
-        public IActionResult Play(string filename)
-        {
-            var filePath = Path.Combine(_uploadsFolderPath, filename);
-
-            if (!System.IO.File.Exists(filePath))
+            // Manually map Song to SongDTO
+            var songDTOs = songs.Select(song => new SongDTO
             {
-                return NotFound("File not found");
+                Id = song.Id,
+                Title = song.Title,
+                Artist = song.Artist,
+                Album = song.Album,
+                Genre = song.Genre,
+                Duration = song.Duration,
+                UploadDate = song.UploadDate
+            }).ToList();
+
+            return Ok(songDTOs);
+        }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload(IFormFile file, [FromForm] string title, [FromForm] string artist, [FromForm] string album, [FromForm] string genre, [FromForm] int duration)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded");
             }
 
-            // This will serve the file correctly with the appropriate headers.
-            return PhysicalFile(filePath, "audio/mpeg", filename, false);
-        }
+            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", uniqueFileName);
 
-        [HttpGet("test")]
-        public IActionResult Test()
-        {
-            return Ok("Test passed!!!");
+            await using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var song = new Song
+            {
+                Title = title,
+                Artist = artist,
+                Album = album,
+                FilePath = uniqueFileName, // Store the unique file name only
+                Genre = genre,
+                Duration = duration,
+                FileType = file.ContentType,
+                UploadDate = DateTime.Now
+            };
+
+            _context.Songs.Add(song);
+            await _context.SaveChangesAsync();
+
+            // Convert to SongDTO to return after upload
+            var songDTO = new SongDTO
+            {
+                Id = song.Id,
+                Title = song.Title,
+                Artist = song.Artist,
+                Album = song.Album,
+                Genre = song.Genre,
+                Duration = song.Duration,
+                UploadDate = song.UploadDate
+            };
+
+            return Ok(songDTO);
         }
     }
 }

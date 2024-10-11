@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "AlCY6cA1bNcBEMeFeM7F+0IyTadjKm9wS+mrHXD23n0=",
+  "Hash": "xyNNeqsvOejwqwkcfgHTjtfakp3DOBK0F5tHWlCjRWc=",
   "Source": "SonorousAPI",
   "BasePath": "_content/SonorousAPI",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "SonorousAPI\\wwwroot",
       "Source": "SonorousAPI",
-      "ContentRoot": "\\\\OCPC\\MusicPlayer\\SonorousAPI\\SonorousAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\twizo\\Documents\\GitHub\\MusicPlayer\\SonorousAPI\\SonorousAPI\\wwwroot\\",
       "BasePath": "_content/SonorousAPI",
       "Pattern": "**"
     }

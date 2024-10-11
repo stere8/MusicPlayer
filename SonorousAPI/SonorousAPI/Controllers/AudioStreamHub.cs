@@ -17,21 +17,24 @@ namespace SonorousAPI.Controllers
                 return;
             }
 
-            // Read the entire MP3 file into a byte array
-            byte[] audioData;
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            byte[] buffer = new byte[65536]; // 64KB buffer size for streaming
+
+            try
             {
-                audioData = new byte[fs.Length];
-                await fs.ReadAsync(audioData, 0, (int)fs.Length);
+                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    int bytesRead;
+                    while ((bytesRead = await fs.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await Clients.Caller.SendAsync("ReceiveAudio", buffer.Take(bytesRead).ToArray());
+                    }
+                }
+                await Clients.Caller.SendAsync("StreamComplete");
             }
-
-            // Send the entire audio file as a Base64 string (or as binary data)
-            // You can choose either method based on your client-side handling
-            var base64Audio = Convert.ToBase64String(audioData);
-            await Clients.Caller.SendAsync("ReceiveAudio", base64Audio);
-
-            // Notify the client that streaming is complete
-            await Clients.Caller.SendAsync("StreamComplete");
+            catch (Exception ex)
+            {
+                await Clients.Caller.SendAsync("ReceiveError", ex.Message);
+            }
         }
     }
 }
